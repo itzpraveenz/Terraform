@@ -109,3 +109,32 @@ resource "aws_network_acl" "ecomm-pub-nacl" {
     Name = "ecomm-pub-nacl"
   }
 }
+
+# Private NACL
+
+resource "aws_network_acl" "ecomm-pvt-nacl" {
+  vpc_id = aws_vpc.ecomm.id
+  subnet_ids      = [aws_subnet.ecomm-pvt-sn.id]
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "ecomm-pvt-nacl"
+  }
+}
